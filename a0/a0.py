@@ -37,10 +37,10 @@ import sys
 import time
 from TwitterAPI import TwitterAPI
 
-consumer_key = 'fixme'
-consumer_secret = 'fixme'
-access_token = 'fixme'
-access_token_secret = 'fixme'
+consumer_key = 'GSSqNcDDd8b1VqPsRvTYpwVMD'
+consumer_secret = 'PB8q5O753yArmWTF30L7MitkjxJifWGEPFGPuX50HiwQTSeUc7'
+access_token = '1169014895666483200-bbuqmtKPuuZCGlbl1do2XnSTVqwNGv'
+access_token_secret = 'cReoTJx1VpFUqXlcikO8G9mqEMN4FL9fdF1MEvMLNwUXw'
 
 
 # This method is done for you.
@@ -67,7 +67,10 @@ def read_screen_names(filename):
     ['BernieSanders', 'JoeBiden', 'SenWarren', 'realDonaldTrump']
     """
     ###TODO
-    pass
+    with open(filename) as file:
+        content = sorted(file.read().splitlines())
+    file.close
+    return content
 
 
 # I've provided the method below to handle Twitter's rate limiting.
@@ -113,7 +116,7 @@ def get_users(twitter, screen_names):
     [6253282, 783214]
     """
     ###TODO
-    pass
+    return robust_request(twitter, 'users/lookup', {'screen_name': screen_names})
 
 
 def get_friends(twitter, screen_name):
@@ -138,7 +141,8 @@ def get_friends(twitter, screen_name):
     [695023, 1697081, 8381682, 10204352, 11669522]
     """
     ###TODO
-    pass
+    request = robust_request(twitter, 'friends/ids', {'screen_name': screen_name})
+    return sorted([id for id in request])
 
 
 def add_all_friends(twitter, users):
@@ -160,7 +164,8 @@ def add_all_friends(twitter, users):
     [695023, 1697081, 8381682, 10204352, 11669522]
     """
     ###TODO
-    pass
+    for user in users:
+        user['friends'] = get_friends(twitter, user['screen_name'])
 
 
 def print_num_friends(users):
@@ -172,8 +177,8 @@ def print_num_friends(users):
         Nothing
     """
     ###TODO
-    pass
-
+    for user in users:
+        print('%s %s'% (user['screen_name'], len(user['friends'])))
 
 def count_friends(users):
     """ Count how often each friend is followed.
@@ -189,7 +194,10 @@ def count_friends(users):
     [(2, 3), (3, 2), (1, 1)]
     """
     ###TODO
-    pass
+    counter = Counter()
+    for user in users:
+        counter.update(user['friends'])
+    return counter
 
 
 def friend_overlap(users):
@@ -214,7 +222,14 @@ def friend_overlap(users):
     [('a', 'c', 3), ('a', 'b', 2), ('b', 'c', 2)]
     """
     ###TODO
-    pass
+    overlap = []
+    for user1 in range(len(users)-1):
+        for user2 in range(user1+1,len(users)):
+            overlap.append((users[user1]['screen_name'],
+                           users[user2]['screen_name'],
+                           len(set(users[user1]['friends'])&set(users[user2]['friends']))))
+    overlap.sort(key=lambda tup: (-tup[2], tup[0], tup[1]))
+    return overlap
 
 
 def followed_by_bernie_and_donald(users, twitter):
@@ -232,7 +247,16 @@ def followed_by_bernie_and_donald(users, twitter):
         that are followed by both Bernie Sanders and Donald Trump.
     """
     ###TODO
-    pass
+    followed_by_Bernie = get_friends(twitter,'BernieSanders')
+    followed_by_Trump = get_friends(twitter,'realDonaldTrump')
+    shared_followed = set(followed_by_Bernie).intersection(followed_by_Trump)
+    if len(shared_followed) >= 1:
+        shared = shared_followed.pop()
+        response = robust_request(twitter,"users/lookup",{'user_id': shared})
+        for follower in response.get_iterator():
+            shared_screen_names = follower['screen_name']
+
+    return shared_screen_names
 
 
 def create_graph(users, friend_counts):
@@ -251,7 +275,21 @@ def create_graph(users, friend_counts):
       A networkx Graph
     """
     ###TODO
-    pass
+    gp = nx.Graph()
+
+    graph = []
+
+    for friend in friend_counts:
+        if friend_counts[friend] >1:
+            graph.append(friend)
+
+    for user in users:
+        gp.add_node(user['screen_name'])
+        for f in graph:
+            gp.add_node(f)
+            if f in user['friends']:
+                gp.add_edge(f,user['screen_name'])
+    return gp
 
 
 def draw_network(graph, users, filename):
@@ -265,7 +303,18 @@ def draw_network(graph, users, filename):
     make it look presentable.
     """
     ###TODO
-    pass
+    label = {}
+    for node in graph.nodes():
+        if node in [user['screen_name'] for user in users]:
+            label[node] = node
+
+    plt.figure(figsize=(20,20))
+    plt.axis('off')
+    nx.draw_networkx(graph, node_size=500, edge_color='#505050', labels=label, width=0.1)
+    plt.savefig(filename, format = "PNG")
+    plt.show()
+    plt.close()
+
 
 
 def main():
@@ -295,3 +344,4 @@ if __name__ == '__main__':
     main()
 
 # That's it for now! This should give you an introduction to some of the data we'll study in this course.
+
