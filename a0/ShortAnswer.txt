@@ -9,7 +9,8 @@ Trump.
 How is this approach misleading? How might you fix it?
 
 Answer:
-The smaller number of overlap friends does not mean the weaker similarity. We need to consider the ratio of overlap number and total number.  
+The smaller number of overlap friends does not mean the weaker similarity. 
+We need to consider the ratio of overlap number and total number.  
 14/(1390+493)= 0.0074
 1/(1390+47)=0.0007
 This result still shows that Bernie Sanders and Elizabeth Warrent are more similar than Bernie Sanders and Donald Trump.
@@ -25,7 +26,11 @@ information.
 
 Answer:
 The output is "VP", Vice President Mike Pence. 
-Although Bernie and Trump are rivals in elections, Bernie said he would keep an open mind to see what ideas Mr.Trump offers and when and how they can work together. (Reference:https://www.nytimes.com/2016/11/12/opinion/bernie-sanders-where-the-democrats-go-from-here.html?&_r=0). From this article, I see Bernie is calm and pragmatic and keeps object rationality. I am not surprised he follows Mike Pence who is meek, tough, and intelligent as a vice president, even an excellent candidate for president.     
+Although Bernie and Trump are rivals in elections, Bernie said he would keep an open mind to see what ideas 
+Mr.Trump offers and when and how they can work together. 
+(Reference:https://www.nytimes.com/2016/11/12/opinion/bernie-sanders-where-the-democrats-go-from-here.html?&_r=0). 
+From this article, I see Bernie is calm and pragmatic and keeps object rationality. 
+I am not surprised he follows Mike Pence who is meek, tough, and intelligent as a vice president, even an excellent candidate for president.     
 
 
 
@@ -33,7 +38,9 @@ Although Bernie and Trump are rivals in elections, Bernie said he would keep an 
 50). Why do you think this is? How might that affect our analysis?
 
 Answer:
-This depends on the personality and reputation. Bernie might need more connections with other people who might support him. While for Trump, the less is more. I see most celebrities on social network have huge amounts of followers but less following others. This is a good way to show that they have high profile.  
+This depends on the personality and reputation. Bernie might need more connections with other people 
+who might support him. While for Trump, the less is more. I see most celebrities on social network 
+have huge amounts of followers but less following others. This is a good way to show that they have high profile.  
 
 
 
@@ -47,6 +54,9 @@ we have to make? Given how Twitter does rate limiting
 minutes will it take to collect this data?
 
 Answer:
-Base on the output, Trump follows 47 users. For each user, we need to get friends and ids. Based on the API reference, 15 requests/15mins. Then we need 47 requests, 47/15= 3.13, which will take about 4 window sessions 60mins in total.
+Base on the output, Trump follows 47 users. For each user, we need to get friends and ids. 
+Based on the API reference, 15 requests/15mins. Then we need 47 requests, 47/15= 3.13, 
+which will take about 4 window sessions 60mins in total.
 
-For all candidates, the total (1390+22+493+47)-(14+3+3+2+1+1)=1928, 1928/15=128.5, which will takes about 129 window sessions 1935mins in total.
+For all candidates, the total (1390+22+493+47)-(14+3+3+2+1+1)=1928, 1928/15=128.5, 
+which will takes about 129 window sessions 1935mins in total.
