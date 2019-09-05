@@ -276,13 +276,10 @@ def create_graph(users, friend_counts):
     """
     ###TODO
     gp = nx.Graph()
-
     graph = []
-
     for friend in friend_counts:
         if friend_counts[friend] >1:
             graph.append(friend)
-
     for user in users:
         gp.add_node(user['screen_name'])
         for f in graph:
